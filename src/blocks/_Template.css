@@ -1,0 +1,3 @@
+/* Stilurile blocului model. Folosește variabilele globale: var(--ink), var(--blue), var(--sky), var(--m) (marginea paginii). */
+.tpl{padding:clamp(80px,14svh,160px) var(--m);display:grid;gap:24px;background:var(--pearl)}
+.tpl p{max-width:38em}
