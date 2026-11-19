@@ -72,7 +72,7 @@ let running=false,fid=0
   }
   function draw(s,t){
     var gl=s.gl,c=s.c,r=c.getBoundingClientRect();if(r.width<2||r.height<2)return;
-    var cap=isCoarse?420000:1500000,dpr=Math.min(window.devicePixelRatio||1,isCoarse?1.5:1.5);
+    var cap=isCoarse?520000:2600000,dpr=Math.min(window.devicePixelRatio||1,1.5);
     var k=Math.min(1,Math.sqrt(cap/(r.width*r.height*dpr*dpr)))*dpr*perf.k;
     var w=Math.max(2,Math.round(r.width*k)),h=Math.max(2,Math.round(r.height*k));
     if(w!==s.w||h!==s.h){s.w=c.width=w;s.h=c.height=h;gl.viewport(0,0,w,h)}
@@ -106,7 +106,8 @@ function start(){
     if(!scenes.length){running=false;return}
     var dt=now-lt;lt=now;mouse.p=(mouse.p||0)*.94;var t=(now-t0)/1000+4.2,any=false
     if(!document.hidden)scenes.forEach(function(s){if(s.vis){draw(s,t);any=true}})
-    if(any&&dt<400){perf.sum+=dt;perf.n++;if(perf.n>=40){var a=perf.sum/perf.n;perf.n=0;perf.sum=0;if(a>30&&perf.k>.36)perf.k*=.75}}
+    /* rezoluția se adaptează lin: scade puțin dacă merge greu, urcă la loc când merge bine; primele 4 secunde (încărcarea) nu contează */
+    if(any&&dt<400&&now-t0>4000){perf.sum+=dt;perf.n++;if(perf.n>=60){var a=perf.sum/perf.n;perf.n=0;perf.sum=0;if(a>40&&perf.k>.72)perf.k=Math.max(.72,perf.k*.9);else if(a<22&&perf.k<1)perf.k=Math.min(1,perf.k*1.1)}}
     requestAnimationFrame(frame)
   })(t0)
 }

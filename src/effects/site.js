@@ -108,26 +108,4 @@ export function initSite(root, s, pages) {
   D.querySelectorAll('.mark,[data-go="' + home + '"]').forEach((a) => s.on(a, 'click', goHome))
   const top = D.getElementById('top')
   if (top) s.on(top, 'click', (e) => { e.preventDefault(); scrollTo({ top: 0, behavior: rm ? 'auto' : 'smooth' }) })
-
-  /* dacă calculatorul nu face față animațiilor, trece o dată pe varianta simplă */
-  if (!window.LITE && window.LITE_AUTO) {
-    let skip = false; try { skip = !!sessionStorage.getItem('bpe-wd') } catch (e) {}
-    if (!skip) {
-      const ts = []; let lt = 0, on = false
-      s.later(() => { on = true }, 2600)
-      const f = (t) => {
-        if (s.dead) return
-        if (on && !D.hidden) {
-          if (lt && t - lt < 600) ts.push(t - lt)
-          if (ts.length >= 60) {
-            ts.sort((a, b) => a - b)
-            if (ts[30] > 45) { try { localStorage.setItem('bpe-mode', 'lite'); sessionStorage.setItem('bpe-wd', '1') } catch (e) {} location.reload() }
-            return
-          }
-        }
-        lt = t; requestAnimationFrame(f)
-      }
-      requestAnimationFrame(f)
-    }
-  }
 }

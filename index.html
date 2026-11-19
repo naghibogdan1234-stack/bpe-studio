@@ -9,20 +9,20 @@
 <link rel="preconnect" href="https://cdn.fontshare.com" crossorigin>
 <link href="https://api.fontshare.com/v2/css?f[]=clash-display@500,600&display=swap" rel="stylesheet">
 <link href="https://api.fontshare.com/v2/css?f[]=satoshi@400,500,700&display=swap" rel="stylesheet">
-<!-- Mod "lite": calculatoarele slabe / fără placă video primesc varianta statică.
-     Rulează înainte de React, ca să nu pornească deloc efectele grele. ?lite / ?full forțează modul. -->
 <script>
 document.documentElement.classList.add('js');
+/* Varianta simplă DOAR pentru calculatoarele fără placă video (randare software).
+   Nu ghicim după viteză: un PC bun e lent 1-2 secunde la încărcare și asta nu înseamnă că e slab.
+   ?lite / ?full forțează modul și se ține minte. */
 (function(){var d=document.documentElement,L=false,q=location.search,m=null;
-try{m=localStorage.getItem('bpe-mode')}catch(e){}
-function sv(v){try{localStorage.setItem('bpe-mode',v)}catch(e){}}
+try{localStorage.removeItem('bpe-mode');m=localStorage.getItem('bpe-pick')}catch(e){}
+function sv(v){try{localStorage.setItem('bpe-pick',v)}catch(e){}}
 if(/[?&]lite\b/.test(q)){L=true;sv('lite')}else if(/[?&]full\b/.test(q)){sv('full')}
 else if(m==='lite')L=true;
-else if(m!=='full'){try{var c=document.createElement('canvas'),o={failIfMajorPerformanceCaveat:true},g=c.getContext('webgl',o)||c.getContext('experimental-webgl',o);
+else if(m!=='full'){try{var c=document.createElement('canvas'),g=c.getContext('webgl')||c.getContext('experimental-webgl');
   if(!g)L=true;else{var x=g.getExtension('WEBGL_debug_renderer_info'),r=x?String(g.getParameter(x.UNMASKED_RENDERER_WEBGL)):'';
-  if(/swiftshader|llvmpipe|softpipe|software|basic render/i.test(r))L=true;var lc=g.getExtension('WEBGL_lose_context');if(lc)lc.loseContext()}}catch(e){L=true}
-  if(navigator.hardwareConcurrency&&navigator.hardwareConcurrency<=2)L=true}
-window.LITE=L;window.LITE_AUTO=(m!=='full'&&!/[?&](full|lite)\b/.test(q));if(L)d.classList.add('lite')})();
+  if(/swiftshader|llvmpipe|softpipe|software|basic render/i.test(r))L=true;var lc=g.getExtension('WEBGL_lose_context');if(lc)lc.loseContext()}}catch(e){L=true}}
+window.LITE=L;if(L)d.classList.add('lite')})();
 </script>
 </head>
 <body>
